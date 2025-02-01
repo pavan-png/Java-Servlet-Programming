@@ -16,9 +16,9 @@ public class TestServlet extends HttpServlet {
 
 	
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setContentType("image/png");
+		response.setContentType("image/jpg");
 		
-		File f = new File("C:\\Users\\mohan\\Java-Servlet-Programming\\servlet-applications\\ResponseInfoApp\\1.png");
+		File f = new File("C:\\Users\\Administrator\\servlets\\servlet-applications\\ResponseInfoApp\\src\\main\\webapp\\cozy-home-interior-anime-style.jpg");
 		FileInputStream fis = new FileInputStream(f);
 		byte[] b = new byte[(int) f.length()];
 		fis.read(b);
