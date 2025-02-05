@@ -15,9 +15,9 @@ public class StudentServiceImpl implements IStudentService {
 
 	private IStudentDao stdDao;
 	@Override
-	public String addStudent(Integer sid, String sname, Integer sage, String saddress) throws FileNotFoundException, SQLException, IOException {
+	public String addStudent(Student student) throws FileNotFoundException, SQLException, IOException {
 		stdDao = StudentDaoFactory.getStudentDao();
-		return stdDao.addStudent(sid, sname, sage, saddress);
+		return stdDao.addStudent(student);
 	}
 
 	@Override

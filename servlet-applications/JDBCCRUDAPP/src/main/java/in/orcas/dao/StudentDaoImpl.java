@@ -35,16 +35,16 @@ public class StudentDaoImpl implements IStudentDao {
 	}
 	
 	
-	public String addStudent(Integer sid, String sname, Integer sage, String saddress) throws SQLException, IOException {
+	public String addStudent(Student student) throws SQLException, IOException {
 	
 		login();
 		
 		String query = "insert into student values (?,?,?,?)";
 		preparedStatement = connection.prepareStatement(query);
-		preparedStatement.setInt(1, sid);
-		preparedStatement.setString(2, sname);
-		preparedStatement.setInt(3,sage);
-		preparedStatement.setString(4, saddress);
+		preparedStatement.setInt(1, student.getSid());
+		preparedStatement.setString(2,student.getSname());
+		preparedStatement.setInt(3,student.getSage());
+		preparedStatement.setString(4, student.getSaddress());
 		Integer rowsAffected = preparedStatement.executeUpdate();
 		if (rowsAffected ==1) {
 			return "success";

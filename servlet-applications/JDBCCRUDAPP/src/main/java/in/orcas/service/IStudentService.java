@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import in.orcas.dto.Student;
 
 public interface IStudentService {
-	public String addStudent(Integer sid, String sname, Integer sage, String saddress) throws FileNotFoundException, SQLException, IOException;
+	public String addStudent(Student student) throws FileNotFoundException, SQLException, IOException;
 	
 	public Student searchStudent(Integer sid) throws FileNotFoundException, SQLException, IOException;
 	

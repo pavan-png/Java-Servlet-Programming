@@ -34,10 +34,11 @@ public class Student implements Serializable{
 	public void setSaddress(String saddress) {
 		this.saddress = saddress;
 	}
+	
 	@Override
 	public String toString() {
 		return "Student [sid=" + sid + ", sname=" + sname + ", sage=" + sage + ", saddress=" + saddress + "]";
-	}
+	} 
 	
 	
 	
