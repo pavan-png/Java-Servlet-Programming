@@ -27,11 +27,20 @@ public class StudentDaoImpl implements IStudentDao {
 	ResultSet resultSet;
 	Student student;
 	
-	public void login() throws SQLException {
-		String configFile = "C:\\Users\\Administrator\\app\\Jdbc_Crud_App\\Jdbc_Crud_App\\src\\credentials\\loginInfo.properties";
+	// load the driver class manually 
+	public void login() throws SQLException, IOException {
+		try {
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+		} catch (ClassNotFoundException e) {
+			
+			e.printStackTrace(); 
+		}  
+		
+		String configFile = "C:\\Users\\Administrator\\servlets\\servlet-applications\\JDBCCRUDAPP\\src\\main\\java\\in\\orcas\\properties\\application.properties";
 		HikariConfig config = new HikariConfig(configFile);
 		HikariDataSource dataSource = new HikariDataSource(config);
 		connection = dataSource.getConnection();
+		
 	}
 	
 	
@@ -46,7 +55,7 @@ public class StudentDaoImpl implements IStudentDao {
 		preparedStatement.setInt(3,student.getSage());
 		preparedStatement.setString(4, student.getSaddress());
 		Integer rowsAffected = preparedStatement.executeUpdate();
-		if (rowsAffected ==1) {
+		if (rowsAffected == 1) {
 			return "success";
 		}
 		else {
