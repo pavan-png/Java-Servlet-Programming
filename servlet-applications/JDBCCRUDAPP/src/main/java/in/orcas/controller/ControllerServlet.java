@@ -143,30 +143,69 @@ public class ControllerServlet extends HttpServlet {
 					out.println("<form method='post' action='./controller/updateRecord'>");
 					out.println("<table>");
 					out.println("<tr><th>ID</th><td>" + student.getSid() + "</td></tr>");
-					out.println("<tr><th>NAME</th><td><input type='text' name='sname' value=" + student.getSname()+ "/></td></tr>");
-					out.println("<tr><th>AGE</th><td><input type='text' name='sage' value=" + student.getSage() + "/></td></tr>");
-					out.println("<tr><th>ADDRESS</th><td><input type='text' name='saddr' value=" + student.getSaddress()+ "/></td></tr>");
+					out.println("<input type='hidden' name='sid' value='"+student.getSid()+"'/>");
+					out.println("<tr><th>NAME</th><td><input type='text' name='sname' value='" + student.getSname()+ "'/></td></tr>");
+					out.println("<tr><th>AGE</th><td><input type='text' name='sage' value='" + student.getSage() + "'/></td></tr>");
+					out.println("<tr><th>ADDRESS</th><td><input type='text' name='saddr' value='" + student.getSaddress()+ "'/></td></tr>");
 					out.println("<tr><td><td><td><input type='submit' value='update'/></td></tr>");
 					out.println("</table>");
 					out.println("</form>");
 					out.println("</center>");
 					out.println("</body>");
 				}
+				else {
+					// display not found message
+					out.println("<body>");
+					out.println("<h1 style='color: red; text-align: center; '>Record not avaialable for the give id :: " + sid + "</h1>");
+					out.println("</body>");
+				}
+				out.close();
 			} catch (NumberFormatException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
+			}
+		}
+			
+			if(request.getRequestURI().endsWith("updateRecord")) {
+				String sid = request.getParameter("sid");
+				String sname = request.getParameter("sname");
+				String sage = request.getParameter("sage");
+				String saddr = request.getParameter("saddr");
+				
+				Student student = new Student();
+				student.setSid(Integer.parseInt(sid));
+				student.setSname(sname);
+				student.setSage(Integer.parseInt(sage));
+				student.setSaddress(saddr);
+				PrintWriter out = null;
+			try {
+				String status = stdService.updateStudent(student);
+				out = response.getWriter();
+				if(status.equals("success")) {
+					out.println("<h1 style='color:green; text-align:center; '>STUDENT RECORD UPDATED SUCCESSFULLY </h1>");
+				} else {
+					out.println("<h1 style='color:green; text-align: center;'>STUDENT RECORD UPDATION FAILED </h1>");
+
+				}
+				out.close();
+				
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
 			}
 		}
 		
 	}
 
-}
+
+ 
