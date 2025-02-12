@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -35,6 +36,7 @@ public class ControllerServlet extends HttpServlet {
 		IStudentService stdService = StudentServiceFactory.getStudentService();
 		System.out.println("Request URI :: "+request.getRequestURI());
 		System.out.println("Request path Info :: " +request.getPathInfo());
+		RequestDispatcher reqDis = null;
 		if(request.getRequestURI().endsWith("addform")){
 			String sid = request.getParameter("sid");
 			String sname = request.getParameter("sname");
@@ -48,20 +50,28 @@ public class ControllerServlet extends HttpServlet {
 			String status = " ";
 			PrintWriter out = null;
 			try {
-				 out = response.getWriter();
+				
+				out = response.getWriter();
 				status = stdService.addStudent(student);
+				if(status.equals("success")) {
+					 reqDis = request.getRequestDispatcher("../success.html");
+					 reqDis.forward(request, response);
+					
+				}
+				else {
+					reqDis = request.getRequestDispatcher("../failure.html");
+					reqDis.forward(request, response);
+					
+				}
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 			 catch (SQLException e) {
 				e.printStackTrace();
+			} catch (ServletException e) {
+				e.printStackTrace();
 			} 
-			if(status.equals("success")) {
-				out.println("<h1 style='color:green; text-align:center;'>REGISTRATION SUCCESFULL</h1>");
-			}
-			else {
-				out.println("<h1 style='color:green; text-align:center;'>REGISTRATION FAILED</h1>");
-			}
+			
 			out.close(); 
 		}
 		if(request.getRequestURI().endsWith("searchform")) {
@@ -103,31 +113,26 @@ public class ControllerServlet extends HttpServlet {
 				String status = stdService.deleteStudent(Integer.parseInt(sid));
 				PrintWriter out = response.getWriter();
 				if(status.equals("success")) {
-					out.println("<body>");
-					out.println("<h1 style='color: green; text-align: center; '>RECORD DELETED SUCCESFULLY</h1>");
-					out.println("</body>");
+					reqDis = request.getRequestDispatcher("../success.html");
+					reqDis.forward(request, response);
 				}else if( status.equals("failure")) {
-					out.println("<body>");
-					out.println("<h1 style='color:red; text-align: center; '>RECORD DELETION FAILED</h1>");
-					out.println("</body>");
+					reqDis = request.getRequestDispatcher("../failure.html");
+					reqDis.forward(request, response);
 				}else {
-					out.println("<body>");
-					out.println("<h1 style='color:green; text-align: center; '>RECORD NOT FOUND FOR DELETION</h1>");
-					out.println("</body>");
+					reqDis = request.getRequestDispatcher("../notfound.html");
+					reqDis.forward(request, response);
 				}
 				out.close();
 				
 			} catch (NumberFormatException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ServletException e) {
 				e.printStackTrace();
 			}
 		}
@@ -187,9 +192,11 @@ public class ControllerServlet extends HttpServlet {
 				String status = stdService.updateStudent(student);
 				out = response.getWriter();
 				if(status.equals("success")) {
-					out.println("<h1 style='color:green; text-align:center; '>STUDENT RECORD UPDATED SUCCESSFULLY </h1>");
+					 reqDis = request.getRequestDispatcher("../success.html");
+					 reqDis.forward(request, response);
 				} else {
-					out.println("<h1 style='color:green; text-align: center;'>STUDENT RECORD UPDATION FAILED </h1>");
+					 reqDis = request.getRequestDispatcher("../failure.html");
+					 reqDis.forward(request, response);
 
 				}
 				out.close();
@@ -199,6 +206,8 @@ public class ControllerServlet extends HttpServlet {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (ServletException e) {
 				e.printStackTrace();
 			}
 			
